@@ -9,14 +9,15 @@ import { products } from '../products';
 const Rating = props => {
     const [iconSize] = useState('14px')
 
+    const stars = []
+    for (let i = 1; i <= 5; i++) {
+        stars.push(<StarIcon size={iconSize} w='14px' color={props.rating >= i ? 'orange.500' : 'gray.200'} />)
+    }
+
     return (
         <Flex>
             <HStack spacing='2px'>
-                <StarIcon size={iconSize} w='14px' color={props.rating >= 1 ? 'orange.500' : 'gray.200'} />
-                <StarIcon size={iconSize} w='14px' color={props.rating >= 2 ? 'orange.500' : 'gray.200'} />
-                <StarIcon size={iconSize} w='14px' color={props.rating >= 3 ? 'orange.500' : 'gray.200'} />
-                <StarIcon size={iconSize} w='14px' color={props.rating >= 4 ? 'orange.500' : 'gray.200'} />
-                <StarIcon size={iconSize} w='14px' color={props.rating >= 5 ? 'orange.500' : 'gray.200'} />
+                {stars}
             </HStack>
             <Text fontSize='md' fontWeight='bold' ml='4px'>
                 {props.numReviews} {props.numReviews === 1 ? 'Review' : 'Reviews'}
