@@ -1,0 +1,26 @@
+{
+  "name": "sellify",
+  "version": "1.0.0",
+  "description": "Backend for Sellify",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "NODE_OPTIONS='--experimental-specifier-resolution=node' node server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anshsahny/Sellify.git"
+  },
+  "author": "Ansh Sahny",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anshsahny/Sellify/issues"
+  },
+  "homepage": "https://github.com/anshsahny/Sellify#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.1.1"
+  }
+}

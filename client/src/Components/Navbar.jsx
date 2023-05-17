@@ -18,7 +18,7 @@ const NavLink = props => {
     )
 }
 
-const Navbar = props => {
+const Navbar = () => {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const { colorMode, toggleColorMode } = useColorMode()
 
