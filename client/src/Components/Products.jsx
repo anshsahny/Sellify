@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Center, Wrap, WrapItem, Flex, Circle, Box, Image, Badge, useColorModeValue, Icon, Button, Tooltip, Stack, Link, HStack, Text } from "@chakra-ui/react";
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link as ReactLink } from 'react-router-dom';
 import { StarIcon } from '@chakra-ui/icons';
+import { useDispatch, useSelector } from 'react-redux'
 
-import { products } from '../products';
+import { getProducts } from '../Redux/actions/productActions'
 
 const Rating = props => {
     const [iconSize] = useState('14px')
@@ -20,7 +21,7 @@ const Rating = props => {
                 {stars}
             </HStack>
             <Text fontSize='md' fontWeight='bold' ml='4px'>
-                {props.numReviews} {props.numReviews === 1 ? 'Review' : 'Reviews'}
+                {props.numberOfReviews} {props.numberOfReviews === 1 ? 'Review' : 'Reviews'}
             </Text>
         </Flex>
     )
@@ -41,7 +42,7 @@ const ProductCard = props => {
             shadow='lg'
             position='relative'
         >
-            {product.isNew && <Circle size='10px' position='absolute' top={2} right={2} bg='green.300' />}
+            {product.productIsNew && <Circle size='10px' position='absolute' top={2} right={2} bg='green.300' />}
             {product.stock <= 0 && <Circle size='10px' position='absolute' top={2} right={2} bg='red.300' />}
             <Image src={product.image} alt={product.name} roundedTop='lg' />
             <Box flex='1' maxH='5' alignItems='baseline'>
@@ -50,7 +51,7 @@ const ProductCard = props => {
                         Sold Out
                     </Badge>
                 }
-                {product.isNew && 
+                {product.productIsNew && 
                     <Badge rounded='full' px='2' fontSize='0.8em' colorScheme='green'>
                         New
                     </Badge>
@@ -64,7 +65,7 @@ const ProductCard = props => {
                 </Link>
             </Flex>
             <Flex justifyContent='space-between' alignContent='center' py='2'>
-                <Rating rating={product.rating} numReviews={product.numReviews} />
+                <Rating rating={product.rating} numberOfReviews={product.numberOfReviews} />
             </Flex>
             <Flex justify='space-between'>
                 <Box fontSize='2xl' color={useColorModeValue('gray.800', 'white')}>
@@ -84,9 +85,17 @@ const ProductCard = props => {
 }
 
 const Products = () => {
+    const dispatch = useDispatch()
+
+    const productList = useSelector((state) => state.products)
+
+    useEffect(() => {
+        dispatch(getProducts())
+    }, [dispatch])
+
     return (
         <Wrap spacing='30px' justify='center' minHeight='100vh'>
-            {products.map((product) => {
+            {productList.products?.map((product) => {
                 return (
                     <WrapItem key={product._id}>
                         <Center w='250px' h='550px'>
