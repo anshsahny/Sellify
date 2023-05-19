@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Center, Wrap, WrapItem, Flex, Circle, Box, Image, Badge, useColorModeValue, Icon, Button, Tooltip, Stack, Link, HStack, Text } from "@chakra-ui/react";
+import { Center, Wrap, WrapItem, Flex, Circle, Box, Image, Badge, useColorModeValue, Icon, Button, Tooltip, Stack, Link, HStack, Text, Spinner, Alert, AlertIcon, AlertTitle, AlertDescription } from "@chakra-ui/react";
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link as ReactLink } from 'react-router-dom';
 import { StarIcon } from '@chakra-ui/icons';
@@ -88,6 +88,7 @@ const Products = () => {
     const dispatch = useDispatch()
 
     const productList = useSelector((state) => state.products)
+    const { loading, products, error } = productList
 
     useEffect(() => {
         dispatch(getProducts())
@@ -95,15 +96,27 @@ const Products = () => {
 
     return (
         <Wrap spacing='30px' justify='center' minHeight='100vh'>
-            {productList.products?.map((product) => {
-                return (
-                    <WrapItem key={product._id}>
-                        <Center w='250px' h='550px'>
-                            <ProductCard product={product} />
-                        </Center>
-                    </WrapItem>     
-                )
-            })}
+            {loading ?
+                <Stack direction='row' spacing={4}>
+                    <Spinner mt={20} thickness='2px' speed='0.65s' emptyColor='gray.200' color='orange.500' size='xl' />
+                </Stack>
+            : error ?
+                <Alert status='error'>
+                    <AlertIcon />
+                    <AlertTitle>Apologies for the inconvenience!</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                </Alert>
+            :
+                products?.map((product) => {
+                    return (
+                        <WrapItem key={product._id}>
+                            <Center w='250px' h='550px'>
+                                <ProductCard product={product} />
+                            </Center>
+                        </WrapItem>     
+                    )
+                })
+            }
         </Wrap>
     )
 }
