@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Center, Wrap, WrapItem, Flex, Circle, Box, Image, Badge, useColorModeValue, Icon, Button, Tooltip, Stack, Link, HStack, Text, Spinner, Alert, AlertIcon, AlertTitle, AlertDescription } from "@chakra-ui/react";
+import { Center, Wrap, WrapItem, Flex, Circle, Box, Image, Badge, useColorModeValue, Icon, Button, Tooltip, Stack, Link, HStack, Text, Spinner, Alert, AlertIcon, AlertTitle, AlertDescription, useToast } from "@chakra-ui/react";
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link as ReactLink } from 'react-router-dom';
 import { StarIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux'
+import { addCartItem } from '../Redux/actions/cartActions';
 
 import { getProducts } from '../Redux/actions/productActions'
 
@@ -29,6 +30,29 @@ const Rating = props => {
 
 const ProductCard = props => {
     const [product] = useState(props.product)
+
+    const dispatch = useDispatch()
+    const toast = useToast()
+
+    const cartInfo = useSelector((state) => state.cart)
+    const { cart } = cartInfo
+
+    const addItem = (id) => {
+        if (cart.some((item) => item.id === id)) {
+            toast({
+                description: 'This item is already in your cart. Go to your cart to change the amount',
+                status: 'error',
+                isClosable: true
+            })
+        } else {
+            dispatch(addCartItem(id, 1))
+            toast({
+                description: 'Item has been added',
+                status: 'success',
+                isClosable: true
+            })
+        }
+    }
 
     return (
         <Stack
@@ -75,7 +99,7 @@ const ProductCard = props => {
                     {product.price.toFixed(2)}
                 </Box>
                 <Tooltip label='Add to Cart' bg='white' placement='top' color='gray.800' fontSize='1.2em'>
-                    <Button variant='ghost' display='flex' disabled={product.stock <= 0}>
+                    <Button variant='ghost' display='flex' disabled={product.stock <= 0} onClick={() => addItem(product._id)}>
                         <Icon as={FiShoppingCart} h='7' w='7' alignSelf='center' />
                     </Button>
                 </Tooltip>
