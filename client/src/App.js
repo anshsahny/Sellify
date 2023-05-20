@@ -4,6 +4,7 @@ import Navbar from './Components/Navbar';
 import Products from './Components/Products';
 import Cart from './Components/Cart';
 import Product from './Components/Product';
+import Footer from './Components/Footer';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path='/cart' element={<Cart />}></Route>
           </Routes>
         </main>
+        <Footer />
       </Router>
     </ChakraProvider>
   );

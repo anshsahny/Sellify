@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Flex, HStack, Link, IconButton, Icon, Text, useDisclosure, Button, Stack, useColorModeValue, useColorMode } from "@chakra-ui/react";
 import { Link as ReactLink } from 'react-router-dom';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
@@ -21,6 +22,7 @@ const NavLink = props => {
 const Navbar = () => {
     const { isOpen, onClose, onOpen } = useDisclosure()
     const { colorMode, toggleColorMode } = useColorMode()
+    const [isHovering, setIsHovering] = useState(false)
 
     const links = [
         {linkName: 'Products', path: '/products'},
@@ -38,10 +40,16 @@ const Navbar = () => {
                     onClick={isOpen ? onClose : onOpen} 
                 />
                 <HStack>
-                    <Link as={ReactLink} to='/'>
+                    <Link 
+                        as={ReactLink} 
+                        to='/' 
+                        style={{ textDecoration: 'none' }} 
+                        onMouseEnter={() => setIsHovering(true)}
+                        onMouseLeave={() => setIsHovering(false)}
+                    >
                         <Flex alignItems='center'>
-                            <Icon as={GiTechnoHeart} h={6} w={6} color='orange.400' />
-                            <Text fontWeight='extrabold'>Sellify</Text>
+                            <Icon as={GiTechnoHeart} h={6} w={6} color={isHovering ? 'cyan.400' : 'orange.400'} />
+                            <Text fontWeight='extrabold' ml='5px'>Sellify</Text>
                         </Flex>
                     </Link>
                     <HStack as='nav' spacing={4} display={{ base: 'none', md: 'flex' }}>
