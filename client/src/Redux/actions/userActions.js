@@ -27,3 +27,26 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => dispatch => {
     dispatch(userLogout())
 }
+
+export const register = (name, email, password) => async (dispatch) => {
+    dispatch(setLoading(true))
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const { data } = await axios.post(`/api/users/register`, { name, email, password }, config)
+        dispatch(userLogin(data))
+    } catch (error) {
+        dispatch(
+            setError(
+                error.response && error.response.data.message
+                ? error.response.data.message 
+                : error.message
+                ? error.message
+                : 'An unexpected error has occured. Please try again later.'
+            )
+        )
+    }
+}

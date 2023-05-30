@@ -3,10 +3,10 @@ import { Box, Button, Container, FormControl, Heading, HStack, Stack, Text, useB
 import { Input } from '@chakra-ui/input'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate, Link as ReactLink, useLocation } from 'react-router-dom'
+import { useNavigate, Link as ReactLink } from 'react-router-dom'
 import { Field, Formik, useField } from 'formik'
 import * as Yup from 'yup'
-import { login } from '../Redux/actions/userActions'
+import { register } from '../Redux/actions/userActions'
 
 const UserInput = props => {
     const [showPassword, setShowPassword] = useState(false)
@@ -32,9 +32,8 @@ const UserInput = props => {
     )
 }
 
-const Login = () => {
+const Registration = () => {
     const navigate = useNavigate()
-    const location = useLocation()
     const dispatch = useDispatch()
     const toast = useToast()
 
@@ -46,24 +45,26 @@ const Login = () => {
 
     useEffect(() => {
         if (userInfo) {
-            location.state?.from ? navigate(location.state?.from) : navigate('/products')
+            navigate('/products')
             toast({
-                description: 'Login Successful',
+                description: 'Account Created. Welcome Abroad!',
                 status: 'success',
                 isClosable: true
             })
         }
-    }, [userInfo, error, navigate, location.state, toast])
+    }, [userInfo, error, navigate, toast])
 
     return (
         <Formik 
-            initialValues={{ email: '', password: '' }}
+            initialValues={{ email: '', password: '', name: '' }}
             validationSchema={Yup.object({
+                name: Yup.string().required('Name is required'),
                 email: Yup.string().email('Invalid Email.').required('Email address is required'),
-                password: Yup.string().min(1, 'Password must be more than 1 character').required('Password is required')
+                password: Yup.string().min(1, 'Password must be more than 1 character').required('Password is required'),
+                confirmPassword: Yup.string().min(1, 'Password must be more than 1 character').required('Password is required').oneOf([Yup.ref('password'), null], 'Passwords must match.')
             })}
             onSubmit={(values) => {
-                dispatch(login(values.email, values.password))
+                dispatch(register(values.name, values.email, values.password))
             }}
         >
             {(formik) => (
@@ -71,11 +72,11 @@ const Login = () => {
                     <Stack spacing='8'>
                         <Stack spacing='6'>
                             <Stack spacing={{ base: '2', md: '3' }} textAlign='center'>
-                                <Heading size={{headingBR}}>Log in to your account</Heading>
+                                <Heading size={{headingBR}}>Create an account.</Heading>
                                 <HStack spacing='1' justify='center'>
-                                    <Text color='muted'>Don't have an account?</Text>
-                                    <Button as={ReactLink} to='/registration' variant='link' colorScheme='orange'>
-                                        Sign Up
+                                    <Text color='muted'>Already a User?</Text>
+                                    <Button as={ReactLink} to='/login' variant='link' colorScheme='orange'>
+                                        Sign In
                                     </Button>
                                 </HStack>
                             </Stack>
@@ -102,8 +103,10 @@ const Login = () => {
                                 }
                                 <Stack spacing='5'>
                                     <FormControl>
+                                        <UserInput type='text' name='name' placeholder='Your first and last name' label='Full Name' />
                                         <UserInput type='text' name='email' placeholder='you@example.com' label='Email' />
                                         <UserInput type='password' name='password' placeholder='your password' label='Password' />
+                                        <UserInput type='password' name='confirmPassword' placeholder='Confirm your password' label='Confirm Password' />
                                     </FormControl>
                                 </Stack>
                                 <Stack spacing='6'>
@@ -119,4 +122,5 @@ const Login = () => {
         </Formik>
     )
 }
-export default Login
+
+export default Registration
