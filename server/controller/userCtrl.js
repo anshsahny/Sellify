@@ -57,4 +57,30 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 })
 
-export {loginUser, registerUser}
+const updateProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if (user) {
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+
+        const updatedUser = await user.save()
+
+        res.status(201).json({
+            _id: updatedUser.id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
+            token: genToken(updatedUser._id),
+            createdAt: updatedUser.createdAt,
+        })
+    } else {
+        res.status(400)
+        throw new Error('Invalid user data.')
+    }
+})
+
+export {loginUser, registerUser, updateProfile}
