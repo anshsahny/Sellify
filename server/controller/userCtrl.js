@@ -19,7 +19,8 @@ const loginUser = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
-            token: genToken(user._id)
+            token: genToken(user._id),
+            createdAt: user.createdAt,
         })
     } else {
         res.status(401)

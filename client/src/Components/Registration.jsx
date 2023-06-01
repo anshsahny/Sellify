@@ -56,7 +56,7 @@ const Registration = () => {
 
     return (
         <Formik 
-            initialValues={{ email: '', password: '', name: '' }}
+            initialValues={{ email: '', password: '', name: '', confirmPassword: '' }}
             validationSchema={Yup.object({
                 name: Yup.string().required('Name is required'),
                 email: Yup.string().email('Invalid Email.').required('Email address is required'),
