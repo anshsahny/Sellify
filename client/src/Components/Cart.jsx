@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, HStack, Link, Stack, useColorModeValue as mode, Spinner, Alert, AlertTitle, AlertIcon, AlertDescription, Wrap, Image, Text, Select, CloseButton, Badge, Button } from '@chakra-ui/react'
-import { Link as ReactLink, useNavigate } from 'react-router-dom'
+import { Link as ReactLink } from 'react-router-dom'
 import { FaArrowRight } from 'react-icons/fa'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,12 +10,6 @@ const CartOrderSummary = () => {
     const standardShipping = Number(4.99).toFixed(2)
     const cartItems = useSelector((state) => state.cart)
     const { subtotal } = cartItems
-    const navigate = useNavigate
-
-    const checkout = () => {
-        setButtonLoading(true)
-        navigate('/checkout')
-    }
 
     return (
         <Stack spacing='8' borderWidth='1px' rounded='lg' padding='8' w='full'>
@@ -53,7 +47,7 @@ const CartOrderSummary = () => {
                 size='lg' 
                 rightIcon={<FaArrowRight />}
                 isLoading={buttonLoading}
-                onClick={() => checkout()}
+                onClick={() => setButtonLoading(true)}
             />
         </Stack>
     )

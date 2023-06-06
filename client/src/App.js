@@ -10,6 +10,7 @@ import Footer from './Components/Footer';
 import Login from './Components/Login';
 import Registration from './Components/Registration';
 import Profile from './Components/Profile'
+import Checkout from './Components/Checkout';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path='/login' element={<Login />}></Route>
             <Route path='/registration' element={<Registration />}></Route>
             <Route path='/profile' element={<Profile />}></Route>
+            <Route path='/checkout' element={<Checkout />}></Route>
           </Routes>
         </main>
         <Footer />
