@@ -3,3 +3,4 @@
 .pnp.js
 node_modules/
 .env
+/client/src/PayPal/client_id.js

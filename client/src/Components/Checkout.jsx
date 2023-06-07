@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Box, Heading, Stack, Flex, useColorModeValue as mode, Image, Text, Spacer, Select, Divider, Badge } from '@chakra-ui/react'
+import { Box, Heading, Stack, Flex, useColorModeValue as mode, Image, Text, Spacer, Select, Divider, Badge, Link } from '@chakra-ui/react'
 import { PhoneIcon, EmailIcon, ChatIcon } from '@chakra-ui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useLocation, Link as ReactLink } from 'react-router-dom'
 import { createOrder } from '../Redux/actions/orderActions'
 import { addCartItem } from '../Redux/actions/cartActions'
+import PayPalButton from '../PayPal/PayPalButton'
 
 const CheckoutItem = props => {
     const { cartItem } = props
@@ -114,6 +115,7 @@ const CheckoutOrderSummary = () => {
                     </Text>
                 </Flex>
             </Stack>
+            <PayPalButton total={total} onPaymentError={onPaymentError} onPaymentSuccess={onPaymentSuccess} />
             <Box align='center'>
                 <Text fontSize='sm'>Have Questions or Need Help to Complete Your Order?</Text>
                 <Flex justifyContent='center' color={mode('orange.500', 'orange.100')}>
@@ -131,6 +133,13 @@ const CheckoutOrderSummary = () => {
                     </Flex>
                 </Flex>
             </Box>
+            <Divider bg={mode('gray.400', 'gray.800')} />
+            <Flex justifyContent='center' my='6' fontWeight='semibold'>
+                <p>or</p>
+                <Link as={ReactLink} to='/products' ml='1'>
+                    Continue Shopping
+                </Link>
+            </Flex>
         </Stack>
     )
 }
