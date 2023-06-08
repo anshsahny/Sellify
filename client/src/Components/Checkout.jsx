@@ -6,6 +6,7 @@ import { Navigate, useLocation, Link as ReactLink } from 'react-router-dom'
 import { createOrder } from '../Redux/actions/orderActions'
 import { addCartItem } from '../Redux/actions/cartActions'
 import PayPalButton from '../PayPal/PayPalButton'
+import ShippingInformation from './ShippingInformation'
 
 const CheckoutItem = props => {
     const { cartItem } = props
@@ -164,7 +165,7 @@ const Checkout = () => {
                         Shipping Information
                     </Heading>
                     <Stack spacing='6'>
-                        {/* ShippingInfo */}
+                        <ShippingInformation />
                     </Stack>
                 </Stack>
                 <Flex direction='column' align='center' flex='1'>
